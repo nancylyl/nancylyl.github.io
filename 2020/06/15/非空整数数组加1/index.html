@@ -5,13 +5,17 @@
   
 
   
-  <title>Nancy&#39;s Blog</title>
+  <title>关于Js性能2--非空整数数组加1 | Nancy&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Nancy&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/index.html">
+  <meta name="description" content="需求：给定一个由整数组成的非空数组所表示的非负整数，在该数的基础上加一。最高位数字存放在数组的首位， 数组中每个元素只存储单个数字。你可以假设除了整数 0 之外，这个整数不会以零开头。输入: [1,2,3]输出: [1,2,4]解释: 输入数组表示数字 123。 在es10之前，我们没有BigInt，当我们在处理大数相加 一般会采取第三方插件或者是自己利用末尾进位相加法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="关于Js性能2--非空整数数组加1">
+<meta property="og:url" content="http://yoursite.com/2020/06/15/%E9%9D%9E%E7%A9%BA%E6%95%B4%E6%95%B0%E6%95%B0%E7%BB%84%E5%8A%A01/index.html">
 <meta property="og:site_name" content="Nancy&#39;s Blog">
+<meta property="og:description" content="需求：给定一个由整数组成的非空数组所表示的非负整数，在该数的基础上加一。最高位数字存放在数组的首位， 数组中每个元素只存储单个数字。你可以假设除了整数 0 之外，这个整数不会以零开头。输入: [1,2,3]输出: [1,2,4]解释: 输入数组表示数字 123。 在es10之前，我们没有BigInt，当我们在处理大数相加 一般会采取第三方插件或者是自己利用末尾进位相加法">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-06-15T00:17:24.000Z">
+<meta property="article:modified_time" content="2020-06-15T00:38:23.281Z">
 <meta property="article:author" content="Nancy">
 <meta name="twitter:card" content="summary">
   
@@ -62,9 +66,7 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main">
-  
-    <article id="post-非空整数数组加1" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-非空整数数组加1" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2020/06/15/%E9%9D%9E%E7%A9%BA%E6%95%B4%E6%95%B0%E6%95%B0%E7%BB%84%E5%8A%A01/" class="article-date">
   <time datetime="2020-06-15T00:17:24.000Z" itemprop="datePublished">2020-06-15</time>
@@ -77,8 +79,8 @@
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/15/%E9%9D%9E%E7%A9%BA%E6%95%B4%E6%95%B0%E6%95%B0%E7%BB%84%E5%8A%A01/">关于Js性能2--非空整数数组加1</a>
+    <h1 class="article-title" itemprop="name">
+      关于Js性能2--非空整数数组加1
     </h1>
   
 
@@ -88,11 +90,47 @@
       
         <p>需求：给定一个由整数组成的非空数组所表示的非负整数，在该数的基础上加一。<br>最高位数字存放在数组的首位， 数组中每个元素只存储单个数字。<br>你可以假设除了整数 0 之外，这个整数不会以零开头。<br>输入: [1,2,3]<br>输出: [1,2,4]<br>解释: 输入数组表示数字 123。</p>
 <p>在es10之前，我们没有BigInt，当我们在处理大数相加 一般会采取第三方插件或者是自己利用末尾进位相加法</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/06/15/%E9%9D%9E%E7%A9%BA%E6%95%B4%E6%95%B0%E6%95%B0%E7%BB%84%E5%8A%A01/#more">Read More</a>
-          </p>
-        
+<a id="more"></a>
+<br/>
+
+<p>—javascript<br>//方法1<br>var plusOne = function(digits) {</p>
+<pre><code>// 数值6145390195186705544超出Number基本类型的容纳范围，改用BigInt基本类型
+let num = BigInt(digits.join(&apos;&apos;));
+// BigInt基本类型进行数学操作时，需要在数字字面量后加个n
+let string = String(num + 1n);
+let ary = string.split(&apos;&apos;);
+
+return ary.map(str =&gt; Number(str));</code></pre><p>};</p>
+<p>var digits = [6, 1, 4, 5, 3, 9, 0, 1, 9, 5, 1, 8, 6, 7, 0, 5, 5, 4, 4];<br>console.log(plusOne(digits));</p>
+<p>//方法2<br>const plusArray = (digits) =&gt; {<br>    let len = digits.length;<br>    let stack = [];<br>    let newArr = [];</p>
+<pre><code>for (let i = len - 1; i &gt;= 0; i--) {
+
+    stack.push(digits[i]); // 元素进栈
+
+    if (stack.length == 1) { // 栈底元素需要进位时 
+
+        if (stack[0] == 9) { // 栈底元素为9
+            if (i == 0) { //  元素全为9的情况
+                newArr.unshift(0);
+                stack[0] = 1; // 手动进位
+            } else {
+                newArr.unshift(0); // 元素不全为9 的情况
+                stack = []; // 清空栈
+            }
+        } else {
+            stack[0] = stack[0] + 1; // 栈底不用进位，栈底直接加一 （0-8）           
+        }
+
+    }
+}
+let endArr = stack.reverse().concat(newArr);
+return endArr;</code></pre><p>}</p>
+<p>console.log(plusArray([1, 2, 4, 5, 9, 9]))</p>
+<p>//方法3<br>function sumBigNumber(a, b) {<br>    var res = ‘’,<br>        temp = 0;<br>    a = a.split(‘’);<br>    b = b.split(‘’);<br>    while (a.length || b.length || temp) {<br>        temp += <del>a.pop() + ~</del>b.pop();//~~的作用是去掉小bai数部分，因为位运算的操作值要求是整数，其du结果也是整数，所以经过位运算的都会自动变成整数。<br>        res = (temp % 10) + res;<br>        temp = temp &gt; 9;<br>    }<br>    return res.replace(/^0+/, ‘’);<br>}</p>
+<p>var plusOne = function(digits) {<br>    digits = digits.join(‘’);<br>    digits = […(sumBigNumber(digits, ‘1’) + ‘’)].map(item =&gt; parseInt(item, 10));<br>    return digits;<br>};</p>
+<p>var digits = [6, 1, 4, 5, 3, 9, 0, 1, 9, 5, 1, 8, 6, 7, 0, 5, 5, 4, 4];<br>console.log(plusOne(digits));</p>
+<hr>
+
       
     </div>
     <footer class="article-footer">
@@ -102,52 +140,19 @@
     </footer>
   </div>
   
-</article>
-
-
+    
+<nav id="article-nav">
   
-    <article id="post-删除重复数据" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2020/06/14/%E5%88%A0%E9%99%A4%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE/" class="article-date">
-  <time datetime="2020-06-14T11:26:59.000Z" itemprop="datePublished">2020-06-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/14/%E5%88%A0%E9%99%A4%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE/">关于Js性能1--删除重复数据</a>
-    </h1>
+    <a href="/2020/06/14/%E5%88%A0%E9%99%A4%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">关于Js性能1--删除重复数据</div>
+    </a>
   
+</nav>
 
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>删除重复数据的思考</p>
-        
-          <p class="article-more-link">
-            <a href="/2020/06/14/%E5%88%A0%E9%99%A4%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE/#more">Read More</a>
-          </p>
-        
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="http://yoursite.com/2020/06/14/%E5%88%A0%E9%99%A4%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE/" data-id="ckbfo3hu60000aktz2gyygqgy" class="article-share-link">Share</a>
-      
-      
-    </footer>
-  </div>
   
 </article>
-
-
-  
-
 
 </section>
         

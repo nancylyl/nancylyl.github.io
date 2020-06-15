@@ -5,17 +5,17 @@
   
 
   
-  <title>关于JS性能2--非空整数数组加1 | Nancy&#39;s Blog</title>
+  <title>关于JS性能练习2--非空整数数组加1 | Nancy&#39;s Blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="需求：给定一个由整数组成的非空数组所表示的非负整数，在该数的基础上加一。最高位数字存放在数组的首位， 数组中每个元素只存储单个数字。你可以假设除了整数 0 之外，这个整数不会以零开头。输入: [1,2,3]输出: [1,2,4]解释: 输入数组表示数字 123。 在es10之前，我们没有BigInt，当我们在处理大数相加 一般会采取第三方插件或者是自己利用末尾进位相加法以下代码有自己写的 也有在查">
+  <meta name="description" content="需求：给定一个由整数组成的非空数组所表示的非负整数，在该数的基础上加一。最高位数字存放在数组的首位， 数组中每个元素只存储单个数字。你可以假设除了整数 0 之外，这个整数不会以零开头。输入: [1,2,3]输出: [1,2,4]解释: 输入数组表示数字 123。 在es10之前，我们没有BigInt，当我们在处理大数相加 一般会采取第三方插件或者是自己利用末尾进位相加法 以下代码仅为个人学习前端时">
 <meta property="og:type" content="article">
-<meta property="og:title" content="关于JS性能2--非空整数数组加1">
+<meta property="og:title" content="关于JS性能练习2--非空整数数组加1">
 <meta property="og:url" content="http://yoursite.com/2020/06/15/%E9%9D%9E%E7%A9%BA%E6%95%B4%E6%95%B0%E6%95%B0%E7%BB%84%E5%8A%A01/index.html">
 <meta property="og:site_name" content="Nancy&#39;s Blog">
-<meta property="og:description" content="需求：给定一个由整数组成的非空数组所表示的非负整数，在该数的基础上加一。最高位数字存放在数组的首位， 数组中每个元素只存储单个数字。你可以假设除了整数 0 之外，这个整数不会以零开头。输入: [1,2,3]输出: [1,2,4]解释: 输入数组表示数字 123。 在es10之前，我们没有BigInt，当我们在处理大数相加 一般会采取第三方插件或者是自己利用末尾进位相加法以下代码有自己写的 也有在查">
+<meta property="og:description" content="需求：给定一个由整数组成的非空数组所表示的非负整数，在该数的基础上加一。最高位数字存放在数组的首位， 数组中每个元素只存储单个数字。你可以假设除了整数 0 之外，这个整数不会以零开头。输入: [1,2,3]输出: [1,2,4]解释: 输入数组表示数字 123。 在es10之前，我们没有BigInt，当我们在处理大数相加 一般会采取第三方插件或者是自己利用末尾进位相加法 以下代码仅为个人学习前端时">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-15T00:17:24.000Z">
-<meta property="article:modified_time" content="2020-06-15T02:24:49.809Z">
+<meta property="article:modified_time" content="2020-06-15T04:55:48.811Z">
 <meta property="article:author" content="Nancy">
 <meta name="twitter:card" content="summary">
   
@@ -80,7 +80,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      关于JS性能2--非空整数数组加1
+      关于JS性能练习2--非空整数数组加1
     </h1>
   
 
@@ -89,11 +89,14 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p>需求：给定一个由整数组成的非空数组所表示的非负整数，在该数的基础上加一。<br>最高位数字存放在数组的首位， 数组中每个元素只存储单个数字。<br>你可以假设除了整数 0 之外，这个整数不会以零开头。<br>输入: [1,2,3]<br>输出: [1,2,4]<br>解释: 输入数组表示数字 123。</p>
-<p>在es10之前，我们没有BigInt，当我们在处理大数相加 一般会采取第三方插件或者是自己利用末尾进位相加法<br>以下代码有自己写的 也有在查阅其它网站资料</p>
+<p>在es10之前，我们没有BigInt，当我们在处理大数相加 一般会采取第三方插件或者是自己利用末尾进位相加法</p>
+<p>以下代码仅为个人学习前端时练习，如有不足多多指教！</p>
 <a id="more"></a>
 <br/>
 
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//方法1</span></span><br><span class="line"><span class="keyword">var</span> plusOne = <span class="function"><span class="keyword">function</span>(<span class="params">digits</span>) </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 数值6145390195186705544超出Number基本类型的容纳范围，改用BigInt基本类型</span></span><br><span class="line">    <span class="keyword">let</span> num = BigInt(digits.join(<span class="string">''</span>));</span><br><span class="line">    <span class="comment">// BigInt基本类型进行数学操作时，需要在数字字面量后加个n</span></span><br><span class="line">    <span class="keyword">let</span> string = <span class="built_in">String</span>(num + <span class="number">1n</span>);</span><br><span class="line">    <span class="keyword">let</span> ary = string.split(<span class="string">''</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> ary.map(<span class="function"><span class="params">str</span> =&gt;</span> <span class="built_in">Number</span>(str));</span><br><span class="line"></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> digits = [<span class="number">6</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">9</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">9</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">8</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">0</span>, <span class="number">5</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">4</span>];</span><br><span class="line"><span class="built_in">console</span>.log(plusOne(digits));</span><br><span class="line"></span><br><span class="line"><span class="comment">//方法2</span></span><br><span class="line"><span class="keyword">const</span> plusArray = <span class="function">(<span class="params">digits</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">let</span> len = digits.length;</span><br><span class="line">    <span class="keyword">let</span> stack = [];</span><br><span class="line">    <span class="keyword">let</span> newArr = [];</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">let</span> i = len - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) &#123;</span><br><span class="line"></span><br><span class="line">        stack.push(digits[i]); <span class="comment">// 元素进栈</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (stack.length == <span class="number">1</span>) &#123; <span class="comment">// 栈底元素需要进位时 </span></span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (stack[<span class="number">0</span>] == <span class="number">9</span>) &#123; <span class="comment">// 栈底元素为9</span></span><br><span class="line">                <span class="keyword">if</span> (i == <span class="number">0</span>) &#123; <span class="comment">//  元素全为9的情况</span></span><br><span class="line">                    newArr.unshift(<span class="number">0</span>);</span><br><span class="line">                    stack[<span class="number">0</span>] = <span class="number">1</span>; <span class="comment">// 手动进位</span></span><br><span class="line">                &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                    newArr.unshift(<span class="number">0</span>); <span class="comment">// 元素不全为9 的情况</span></span><br><span class="line">                    stack = []; <span class="comment">// 清空栈</span></span><br><span class="line">                &#125;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                stack[<span class="number">0</span>] = stack[<span class="number">0</span>] + <span class="number">1</span>; <span class="comment">// 栈底不用进位，栈底直接加一 （0-8）           </span></span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">let</span> endArr = stack.reverse().concat(newArr);</span><br><span class="line">    <span class="keyword">return</span> endArr;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="built_in">console</span>.log(plusArray([<span class="number">1</span>, <span class="number">2</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">9</span>, <span class="number">9</span>]))</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">//方法3</span></span><br><span class="line"><span class="function"><span class="keyword">function</span> <span class="title">sumBigNumber</span>(<span class="params">a, b</span>) </span>&#123;</span><br><span class="line">    <span class="keyword">var</span> res = <span class="string">''</span>,</span><br><span class="line">        temp = <span class="number">0</span>;</span><br><span class="line">    a = a.split(<span class="string">''</span>);</span><br><span class="line">    b = b.split(<span class="string">''</span>);</span><br><span class="line">    <span class="keyword">while</span> (a.length || b.length || temp) &#123;</span><br><span class="line">        temp += ~~a.pop() + ~~b.pop();<span class="comment">//~~的作用是去掉小bai数部分，因为位运算的操作值要求是整数，其du结果也是整数，所以经过位运算的都会自动变成整数。</span></span><br><span class="line">        res = (temp % <span class="number">10</span>) + res;</span><br><span class="line">        temp = temp &gt; <span class="number">9</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> res.replace(<span class="regexp">/^0+/</span>, <span class="string">''</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> plusOne = <span class="function"><span class="keyword">function</span>(<span class="params">digits</span>) </span>&#123;</span><br><span class="line">    digits = digits.join(<span class="string">''</span>);</span><br><span class="line">    digits = [...(sumBigNumber(digits, <span class="string">'1'</span>) + <span class="string">''</span>)].map(<span class="function"><span class="params">item</span> =&gt;</span> <span class="built_in">parseInt</span>(item, <span class="number">10</span>));</span><br><span class="line">    <span class="keyword">return</span> digits;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> digits = [<span class="number">6</span>, <span class="number">1</span>, <span class="number">4</span>, <span class="number">5</span>, <span class="number">3</span>, <span class="number">9</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">9</span>, <span class="number">5</span>, <span class="number">1</span>, <span class="number">8</span>, <span class="number">6</span>, <span class="number">7</span>, <span class="number">0</span>, <span class="number">5</span>, <span class="number">5</span>, <span class="number">4</span>, <span class="number">4</span>];</span><br><span class="line"><span class="built_in">console</span>.log(plusOne(digits));</span><br></pre></td></tr></table></figure>
+
+
       
     </div>
     <footer class="article-footer">
@@ -110,7 +113,7 @@
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          关于JS性能3--根据传入索引旋转数组
+          关于JS性能练习3--根据传入索引旋转数组
         
       </div>
     </a>
@@ -118,7 +121,7 @@
   
     <a href="/2020/06/14/%E5%88%A0%E9%99%A4%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">关于JS性能1--删除重复数据</div>
+      <div class="article-nav-title">关于JS性能练习1--删除重复数据</div>
     </a>
   
 </nav>
@@ -159,19 +162,19 @@
           </li>
         
           <li>
-            <a href="/2020/06/15/%E6%95%B0%E7%BB%84%E4%B8%AD%E4%BB%BB%E6%84%8F%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/">关于JS性能5--数组中任意两数之和</a>
+            <a href="/2020/06/15/%E6%95%B0%E7%BB%84%E4%B8%AD%E4%BB%BB%E6%84%8F%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/">关于JS性能练习5--数组中任意两数之和</a>
           </li>
         
           <li>
-            <a href="/2020/06/15/%E5%88%A4%E6%96%AD%E6%95%B0%E7%BB%84%E4%B8%AD%E6%98%AF%E5%90%A6%E6%9C%89%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE/">关于JS性能4--利用es6 Set 判断数组中是否有重复数据</a>
+            <a href="/2020/06/15/%E5%88%A4%E6%96%AD%E6%95%B0%E7%BB%84%E4%B8%AD%E6%98%AF%E5%90%A6%E6%9C%89%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE/">关于JS性能练习4--利用es6 Set 判断数组中是否有重复数据</a>
           </li>
         
           <li>
-            <a href="/2020/06/15/%E6%A0%B9%E6%8D%AE%E4%BC%A0%E5%85%A5%E7%B4%A2%E5%BC%95%E6%97%8B%E8%BD%AC%E6%95%B0%E7%BB%84/">关于JS性能3--根据传入索引旋转数组</a>
+            <a href="/2020/06/15/%E6%A0%B9%E6%8D%AE%E4%BC%A0%E5%85%A5%E7%B4%A2%E5%BC%95%E6%97%8B%E8%BD%AC%E6%95%B0%E7%BB%84/">关于JS性能练习3--根据传入索引旋转数组</a>
           </li>
         
           <li>
-            <a href="/2020/06/15/%E9%9D%9E%E7%A9%BA%E6%95%B4%E6%95%B0%E6%95%B0%E7%BB%84%E5%8A%A01/">关于JS性能2--非空整数数组加1</a>
+            <a href="/2020/06/15/%E9%9D%9E%E7%A9%BA%E6%95%B4%E6%95%B0%E6%95%B0%E7%BB%84%E5%8A%A01/">关于JS性能练习2--非空整数数组加1</a>
           </li>
         
       </ul>

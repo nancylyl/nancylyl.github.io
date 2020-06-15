@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+
+  
+  <title>算法学习1--二分查找 | Nancy&#39;s Blog</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="前沿　学习算法之前，我们需要具备的知识1.什么是大Ｏ，请参考https:&#x2F;&#x2F;www.juhe.cn&#x2F;news&#x2F;index&#x2F;id&#x2F;1706O(n) 线性时间操作  &#x2F;&#x2F;慢 ，算法包括简单算法O(1) 常数时间操作&#x2F;&#x2F;非常快，比如键值对，你给一个值，则返回一个你需要的值O(log n) 对数时间操作&#x2F;&#x2F;是 o(n)的一半，这样的算法包括二分算法O(n²) &#x2F;&#x2F;较慢算法，比如选择排序O(n!) &#x2F;&#x2F;非常">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法学习1--二分查找">
+<meta property="og:url" content="http://yoursite.com/2020/06/15/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A01-%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/index.html">
+<meta property="og:site_name" content="Nancy&#39;s Blog">
+<meta property="og:description" content="前沿　学习算法之前，我们需要具备的知识1.什么是大Ｏ，请参考https:&#x2F;&#x2F;www.juhe.cn&#x2F;news&#x2F;index&#x2F;id&#x2F;1706O(n) 线性时间操作  &#x2F;&#x2F;慢 ，算法包括简单算法O(1) 常数时间操作&#x2F;&#x2F;非常快，比如键值对，你给一个值，则返回一个你需要的值O(log n) 对数时间操作&#x2F;&#x2F;是 o(n)的一半，这样的算法包括二分算法O(n²) &#x2F;&#x2F;较慢算法，比如选择排序O(n!) &#x2F;&#x2F;非常">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://yoursite.com/img/myimage/3.jpg">
+<meta property="article:published_time" content="2020-06-15T05:00:20.000Z">
+<meta property="article:modified_time" content="2020-06-15T05:38:20.922Z">
+<meta property="article:author" content="Nancy">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://yoursite.com/img/myimage/3.jpg">
+  
+    <link rel="alternate" href="/atom.xml" title="Nancy&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Nancy&#39;s Blog</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="RSS Feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-算法学习1-二分查找" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2020/06/15/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A01-%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" class="article-date">
+  <time datetime="2020-06-15T05:00:20.000Z" itemprop="datePublished">2020-06-15</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      算法学习1--二分查找
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="前沿-学习算法之前，我们需要具备的知识"><a href="#前沿-学习算法之前，我们需要具备的知识" class="headerlink" title="前沿　学习算法之前，我们需要具备的知识"></a>前沿　学习算法之前，我们需要具备的知识</h1><p>1.什么是大Ｏ，请参考<a href="https://www.juhe.cn/news/index/id/1706" target="_blank" rel="noopener">https://www.juhe.cn/news/index/id/1706</a><br>O(n) 线性时间操作  //慢 ，算法包括简单算法<br>O(1) 常数时间操作//非常快，比如键值对，你给一个值，则返回一个你需要的值<br>O(log n) 对数时间操作//是 o(n)的一半，这样的算法包括二分算法<br>O(n²) //较慢算法，比如选择排序<br>O(n!) //非常慢的算法<br>O(n log n)  //快速排序<br> <img src="/img/myimage/3.jpg" alt=""></p>
+<p>１．算法的速度指的并非是时间，而是操作数的增速<br>２.讨论算法的速度我们说的是随着输入的增加，其运行时间将以什么样的速度增加<br>３.算法的运行时间用大Ｏ表示法表示<br>４.O(log n)比O(n)快，当需要搜索的元素越多，前者比后者快的多<br>//二分查找</p>
+<h2 id="注意：二分查找要求必須是有序元素列表-原理如下"><a href="#注意：二分查找要求必須是有序元素列表-原理如下" class="headerlink" title="注意：二分查找要求必須是有序元素列表　原理如下"></a>注意：二分查找要求必須是有序元素列表　原理如下</h2><h3 id="比如一个数为１－１０-您每次猜测后，我都会说小了大了或者对了，最佳算法是从５开始，这样就排除了半的数字！每次都将剩余数字排除一半"><a href="#比如一个数为１－１０-您每次猜测后，我都会说小了大了或者对了，最佳算法是从５开始，这样就排除了半的数字！每次都将剩余数字排除一半" class="headerlink" title="比如一个数为１－１０　您每次猜测后，我都会说小了大了或者对了，最佳算法是从５开始，这样就排除了半的数字！每次都将剩余数字排除一半"></a>比如一个数为１－１０　您每次猜测后，我都会说小了大了或者对了，最佳算法是从５开始，这样就排除了半的数字！每次都将剩余数字排除一半</h3><a id="more"></a>
+
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">var test = fu#nction(list, value) &#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">let</span> low = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> count = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> high = list.length;</span><br><span class="line">    <span class="keyword">let</span> mid = <span class="number">0</span>,</span><br><span class="line">        guess = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">let</span> isture = <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">while</span> (low &lt;= high) &#123;</span><br><span class="line">        mid = <span class="built_in">Math</span>.ceil((high + low) / <span class="number">2</span>);</span><br><span class="line">        guess = list[mid];</span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (value == guess) &#123;</span><br><span class="line">            <span class="keyword">return</span> count;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">if</span> (guess &gt; value) &#123;</span><br><span class="line">            high = mid - <span class="number">1</span>;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            low = mid + <span class="number">1</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        count = count + <span class="number">1</span>;</span><br><span class="line">        isture = <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">if</span> (!isture) &#123;</span><br><span class="line">        <span class="built_in">console</span>.log(<span class="string">"没有找到你要的数"</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> count;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> myList = [];</span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> i = <span class="number">1</span>; i &lt;= <span class="number">100</span>; i++) &#123;</span><br><span class="line">    myList.push(i);</span><br><span class="line">&#125;</span><br><span class="line"><span class="built_in">console</span>.log( test(myList, <span class="number">113</span>));</span><br></pre></td></tr></table></figure>
+<h2 id="总结，二分查找-１０个数字的时候-你在４次之内都能猜到，可能你觉得并没有什么。当单词为１００的时候，您最多７次则能猜到，当单词达到240-000个时，您在17次内则能查到，这便体现了二分查找的性能和优势！"><a href="#总结，二分查找-１０个数字的时候-你在４次之内都能猜到，可能你觉得并没有什么。当单词为１００的时候，您最多７次则能猜到，当单词达到240-000个时，您在17次内则能查到，这便体现了二分查找的性能和优势！" class="headerlink" title="总结，二分查找　１０个数字的时候　你在４次之内都能猜到，可能你觉得并没有什么。当单词为１００的时候，您最多７次则能猜到，当单词达到240 000个时，您在17次内则能查到，这便体现了二分查找的性能和优势！"></a>总结，二分查找　１０个数字的时候　你在４次之内都能猜到，可能你觉得并没有什么。当单词为１００的时候，您最多７次则能猜到，当单词达到240 000个时，您在17次内则能查到，这便体现了二分查找的性能和优势！</h2>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://yoursite.com/2020/06/15/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A01-%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/" data-id="ckbg2d9o40000c8tzaqbobp6m" class="article-share-link">Share</a>
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2020/06/15/%E6%89%BE%E5%87%BA%E6%95%B0%E7%BB%84%E4%B8%AD%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E5%80%BC/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">关于JS性能练习6 --找出数组中只出现一次的值</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+
+  
+    
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/06/">六月 2020</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2020/06/15/%E7%AE%97%E6%B3%95%E5%AD%A6%E4%B9%A01-%E4%BA%8C%E5%88%86%E6%9F%A5%E6%89%BE/">算法学习1--二分查找</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/%E6%89%BE%E5%87%BA%E6%95%B0%E7%BB%84%E4%B8%AD%E5%8F%AA%E5%87%BA%E7%8E%B0%E4%B8%80%E6%AC%A1%E7%9A%84%E5%80%BC/">关于JS性能练习6 --找出数组中只出现一次的值</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/%E6%95%B0%E7%BB%84%E4%B8%AD%E4%BB%BB%E6%84%8F%E4%B8%A4%E6%95%B0%E4%B9%8B%E5%92%8C/">关于JS性能练习5--数组中任意两数之和</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/%E5%88%A4%E6%96%AD%E6%95%B0%E7%BB%84%E4%B8%AD%E6%98%AF%E5%90%A6%E6%9C%89%E9%87%8D%E5%A4%8D%E6%95%B0%E6%8D%AE/">关于JS性能练习4--利用es6 Set 判断数组中是否有重复数据</a>
+          </li>
+        
+          <li>
+            <a href="/2020/06/15/%E6%A0%B9%E6%8D%AE%E4%BC%A0%E5%85%A5%E7%B4%A2%E5%BC%95%E6%97%8B%E8%BD%AC%E6%95%B0%E7%BB%84/">关于JS性能练习3--根据传入索引旋转数组</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2020 Nancy<br>
+      Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+  
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+  </div>
+</body>
+</html>
